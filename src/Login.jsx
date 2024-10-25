@@ -38,7 +38,7 @@ function Login()
     const login = {
         width: '300px',
         height: '160px',
-        border: 'black solid 2px',
+        border: '#555555 solid 2px',
         borderRadius: '20px',
         boxShadow: "2px 2px 2px rgb(100,100,100)",
     };
