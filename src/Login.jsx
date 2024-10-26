@@ -14,9 +14,9 @@ function Login()
         try 
         {
             const response = await axios.post('http://localhost:3000/api/custom-query', { customQuery: sqlQuery });
-            if(response.data.length === 1)
+            if(response.data.length === 1) 
             console.log('Successful Login');
-            else
+            else if(response.data.length === 0)
             console.log('Entry Denied');
         } 
         catch (error) 
