@@ -26,21 +26,20 @@ function Login()
     };
 
     const body = {
-        padding: 0,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         height: 'calc(100vh - 64px)', 
-        margin: 0,
         overflow: 'hidden',
     };
 
     const login = {
+        textAlign: 'center',
         width: '300px',
         height: '160px',
         border: '#555555 solid 2px',
         borderRadius: '20px',
-        boxShadow: "2px 2px 2px rgb(100,100,100)",
+        boxShadow: "2px 2px 2px rgb(100,100,100)"
     };
 
     const input = {
