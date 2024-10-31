@@ -61,6 +61,22 @@ CREATE TABLE Item (
     discount DECIMAL(5, 2) DEFAULT 0.00
 );
 
+CREATE TABLE Buy (
+    buy_id INT PRIMARY KEY AUTO_INCREMENT,
+    customer_id INT NOT NULL,
+    item_id INT NOT NULL,
+    quantity INT DEFAULT 1,
+    purchase_date Timestamp DEFAULT current_timestamp,
+    UNIQUE (customer_id, item_id, purchase_date)
+);
+
+CREATE TABLE Supplies (
+    Supplier_id INT,
+    Item_id INT,
+    Batch_id INT,
+    PRIMARY KEY (Supplier_id, Item_id)
+);
+
 # Inserted Values
 insert into user(id,username,password,role) values(100,'vedaant','student','administrator');
 
