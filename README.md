@@ -23,7 +23,6 @@ CREATE TABLE Employee (
 CREATE TABLE Department (
     dept_id INT PRIMARY KEY,
     dept_name VARCHAR(50) NOT NULL UNIQUE,
-    dept_roles VARCHAR(100) NOT NULL,
     manager_id INT
 );
 
