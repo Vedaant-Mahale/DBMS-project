@@ -16,7 +16,7 @@ CREATE TABLE Employee (
     salary DECIMAL(10, 2) NOT NULL,
     address VARCHAR(150),
     birth_date DATE,
-    gender CHAR(1) CHECK (gender IN ('M', 'F', 'O')), -- M for Male, F for Female, O for Other
+    gender CHAR(1) CHECK (gender IN ('M', 'F', 'O')),
     image_url VARCHAR(100)
 );
 
