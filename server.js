@@ -27,7 +27,7 @@ connection.connect((err) => {
 });
 
 // API Route to handle custom query
-app.post('/api/custom-query', (req, res) => {
+app.post('/api/sql-connect', (req, res) => {
     const { customQuery } = req.body;
 
     // Execute the custom query
