@@ -2,7 +2,7 @@
 # Database Schema and Inserted Values
 
 # Schema
-create table user(id int primary key,username varchar(20) unique not null,password varchar(50) unique not null,role varchar(20));
+create table User(id int primary key,username varchar(20) unique not null,password varchar(50) unique not null,role varchar(20));
 
 CREATE TABLE Employee (
     employee_id INT PRIMARY KEY,
@@ -16,7 +16,7 @@ CREATE TABLE Employee (
     salary DECIMAL(10, 2) NOT NULL,
     address VARCHAR(150),
     birth_date DATE,
-    gender CHAR(1) CHECK (gender IN ('M', 'F', 'O')), -- M for Male, F for Female, O for Other
+    gender CHAR(1) CHECK (gender IN ('M', 'F', 'O')),
     image_url VARCHAR(100)
 );
 
