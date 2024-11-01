@@ -2,7 +2,7 @@
 # Database Schema and Inserted Values
 
 # Schema
-create table user(id int primary key,username varchar(20) unique not null,password varchar(50) unique not null,role varchar(20));
+create table User(id int primary key,username varchar(20) unique not null,password varchar(50) unique not null,role varchar(20));
 
 CREATE TABLE Employee (
     employee_id INT PRIMARY KEY,
