@@ -22,7 +22,8 @@ function Login()
             const response = await axios.post('http://localhost:3000/api/sql-connect', { customQuery: sqlQuery });
             if(response.data.length === 1) 
             {
-                navigate('/about',{ state: { user: response } });
+                console.log('Success');
+                navigate('/customer',{ state: { user: response.data } });
             }
             else
             {
