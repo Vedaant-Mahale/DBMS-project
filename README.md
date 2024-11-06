@@ -17,7 +17,7 @@ CREATE TABLE Employee (
     address VARCHAR(150),
     birth_date DATE,
     gender CHAR(1) CHECK (gender IN ('M', 'F', 'O')),
-    image_url VARCHAR(100)
+    image_url VARCHAR(500)
 );
 
 CREATE TABLE Department (
