@@ -3,38 +3,26 @@ import axios from 'axios';
 import { useLocation,useNavigate } from 'react-router-dom';
 import logo from './assets/logo.png';
 
-function Homepage() {
+function Customer() {
     const location = useLocation();
     const user = location.state?.user;
     const [transactions, setTransactions] = useState([]);
     const [isemployeehovering, setIsEmployeeHovering] = useState(false);
-    const [iswarehousehovering, setIsWarehouseHovering] = useState(false);
-    const [sales,setSales] = useState([]);
-    const [customer,setCustomer] = useState([]);
+    const [isCustomerhovering, setIsCustomerHovering] = useState(false);
+    const [amount,setAmount] = useState([]);
     const navigate = useNavigate();
     useEffect(() => {
         const fetchTransactions = async () => {
-          try {
-              const response = await axios.post('http://localhost:3000/api/sql-connect', { customQuery: "Select * from Buy" });
-              setTransactions(response.data);
-          } 
-          catch (error) {
-              console.error('Error fetching transactions:', error);
-            }
-          try {
-              const salesresponse = await axios.post('http://localhost:3000/api/sql-connect', { customQuery: "Select sum(amount) as sales from Buy" });
-              setSales(salesresponse.data[0]);
-              console.log(sales);
-          }
-          catch (error) {
+        try {
+            const response = await axios.post('http://localhost:3000/api/sql-connect', { customQuery: "Select * from Item" });
+            setTransactions(response.data);
+        } catch (error) {
             console.error('Error fetching transactions:', error);
           }
           try {
-            const customerresponse = await axios.post('http://localhost:3000/api/sql-connect', { customQuery: "Select count(distinct customer_id) as u_customer from Buy" });
-            setCustomer(customerresponse.data[0]);
-            console.log(customer);
-          }
-          catch (error) {
+            const amounttrans = await axios.post('http://localhost:3000/api/sql-connect', { customQuery: "Select sum(quantity) as t_amount from Item" });
+            setAmount(amounttrans.data[0]);
+        } catch (error) {
             console.error('Error fetching transactions:', error);
           }
         };
@@ -44,9 +32,9 @@ function Homepage() {
       {
           navigate('/employee',{ state: { user: user } });
       }
-      const toWarehouse = () =>
+      const toCustomer = () =>
       {
-          navigate('/warehouse',{state: { user:user}});
+          navigate('/Customer',{state: { user:user}});
       }
       const handleEmployeeMouseHover = () => 
       {
@@ -56,13 +44,13 @@ function Homepage() {
       {
         setIsEmployeeHovering(false);
       }
-      const handleWarehouseMouseHover = () =>
+      const handleCustomerMouseHover = () =>
       {
-        setIsWarehouseHovering(true);
+        setIsCustomerHovering(true);
       }
-      const handleWarehouseMouseLeave = () =>
+      const handleCustomerMouseLeave = () =>
       {
-        setIsWarehouseHovering(false);
+        setIsCustomerHovering(false);
       }
     const styles = {
         dashboard: {
@@ -99,9 +87,9 @@ function Homepage() {
           transition: 'background-color 0.1s ease-in',
           margin:'20px',
         },
-        Warehousebutton: {
-          backgroundColor: iswarehousehovering? '#AADDFF':'white',
-          color: iswarehousehovering? 'white':'black',
+        Customerbutton: {
+          backgroundColor: isCustomerhovering? '#AADDFF':'white',
+          color: isCustomerhovering? 'white':'black',
           fontWeight:'bold',
           padding: '10px',
           fontFamily: '20px',
@@ -129,7 +117,6 @@ function Homepage() {
           margin:'10px',
           fontWeight: 'bold',
           padding: '20px',
-          fontFamily: 'Arial, sans-serif',
         },
         stats: {
           display: 'flex',
@@ -191,20 +178,17 @@ function Homepage() {
             <img src = {logo} style={styles.logo}></img>
             <div className="buttons">
               <button style = {styles.Employeebutton} onClick={toEmployee} onMouseEnter={handleEmployeeMouseHover} onMouseLeave={handleEmployeeMouseLeave}>Employee</button>
-              <button style = {styles.Warehousebutton} onClick={toWarehouse} onMouseEnter={handleWarehouseMouseHover} onMouseLeave={handleWarehouseMouseLeave}>Warehouse</button>
+              <button style = {styles.Customerbutton} onClick={toCustomer} onMouseEnter={handleCustomerMouseHover} onMouseLeave={handleCustomerMouseLeave}>Customer</button>
             </div>
             <div style={styles.userInfo}>
               <span style={styles.userAvatar}>{user[0].username}</span>
             </div>
           </header>
+    
           <div style={styles.stats}>
             <div style={styles.statCard}>
-              <h3 style={styles.statCardTitle}>Total Sales</h3>
-              <p style={styles.amount}>${sales.sales}</p>
-            </div>
-            <div style={styles.statCard}>
-              <h3 style={styles.statCardTitle}>Active Customers</h3>
-              <p style={styles.amount}>{customer.u_customer}</p>
+              <h3 style={styles.statCardTitle}>Amount in Stock</h3>
+              <p style={styles.amount}>{amount.t_amount}</p>
             </div>
           </div>
           <div style = {styles.newheader}>
@@ -212,23 +196,19 @@ function Homepage() {
           </div>
           <section className="transactions">
             <table style={styles.table}>
-            <thead>
+              <thead>
                 <tr>
-                  <th style={styles.tableHeader}>Transaction ID</th>
-                  <th style={styles.tableHeader}>Customer</th>
-                  <th style={styles.tableHeader}>Items</th>
+                  <th style={styles.tableHeader}>Batch ID</th>
+                  <th style={styles.tableHeader}>Item ID</th>
                   <th style={styles.tableHeader}>Amount</th>
-                  <th style={styles.tableHeader}>Purchase Date</th>
                 </tr>
-            </thead> 
+              </thead>
             <tbody>
             {transactions.map((transaction) => (
               <tr key={transaction.buy_id}>
-                <th style={styles.tableCell}>{transaction.buy_id}</th>
-                <th style={styles.tableCell}>{transaction.customer_id}</th>
+                <th style={styles.tableCell}>{transaction.batch_id}</th>
+                <th style={styles.tableCell}>{transaction.item_id}</th>
                 <th style={styles.tableCell}>{transaction.quantity}</th>
-                <th style={styles.tableCell}>{transaction.amount}</th>
-                <th style={styles.tableCell}>{transaction.purchase_date}</th>
               </tr>
             ))}
           </tbody>
@@ -238,4 +218,4 @@ function Homepage() {
       );
 }
 
-export default Homepage
+export default Customer
