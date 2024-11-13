@@ -54,7 +54,7 @@ CREATE TABLE Item (
     item_name VARCHAR(100) NOT NULL,
     price_bought DECIMAL(10, 2) NOT NULL,
     price_sold DECIMAL(10, 2) NOT NULL,
-    quantity_in_stock INT DEFAULT 0,
+    quantity INT DEFAULT 0,
     shelf_life_days INT,
     shelf_no VARCHAR(50),
     discount DECIMAL(5, 2) DEFAULT 0.00
@@ -63,7 +63,7 @@ CREATE TABLE Item (
 CREATE TABLE Buy (
     buy_id INT PRIMARY KEY AUTO_INCREMENT,
     customer_id INT NOT NULL,
-    item_id INT NOT NULL,
+    batch_id INT NOT NULL,
     quantity INT DEFAULT 1,
     purchase_date Timestamp DEFAULT current_timestamp,
     UNIQUE (customer_id, item_id, purchase_date)
@@ -73,9 +73,25 @@ CREATE TABLE Supplies (
     Supplier_id INT,
     Item_id INT,
     Batch_id INT,
-    PRIMARY KEY (Supplier_id, Item_id)
+    PRIMARY KEY (Supplier_id)
 );
 
 # Inserted Values
-insert into user(id,username,password,role) values(100,'vedaant','student','administrator');
+insert into user(id,username,password,role) values(100,'Vedaant','student','administrator');
+
+# Triggers
+
+DELIMITER //
+
+CREATE TRIGGER batch_bought
+AFTER INSERT ON buy
+FOR EACH ROW
+BEGIN
+    Update Item
+    Set quantity = quantity - new.quantity
+    where batch_id = new.batch_id;
+END;
+//
+
+
 
