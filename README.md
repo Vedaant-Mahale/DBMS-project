@@ -75,7 +75,7 @@ CREATE TABLE Supplies (
     Batch_id INT,
     quantity INT,
     expired INT,
-    PRIMARY KEY (Supplier_id)
+    PRIMARY KEY (Batch_id)
 );
 
 # Inserted Values
