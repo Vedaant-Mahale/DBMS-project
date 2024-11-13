@@ -55,8 +55,8 @@ CREATE TABLE Item (
     price_bought DECIMAL(10, 2) NOT NULL,
     price_sold DECIMAL(10, 2) NOT NULL,
     quantity INT DEFAULT 0,
-    shelf_life_days INT,
     shelf_no VARCHAR(50),
+    shelf_life_days INT,
     discount DECIMAL(5, 2) DEFAULT 0.00
 );
 
@@ -66,13 +66,15 @@ CREATE TABLE Buy (
     batch_id INT NOT NULL,
     quantity INT DEFAULT 1,
     purchase_date Timestamp DEFAULT current_timestamp,
-    UNIQUE (customer_id, item_id, purchase_date)
+    UNIQUE (customer_id,batch_id, purchase_date)
 );
 
 CREATE TABLE Supplies (
     Supplier_id INT,
     Item_id INT,
     Batch_id INT,
+    quantity INT,
+    expired INT,
     PRIMARY KEY (Supplier_id)
 );
 
