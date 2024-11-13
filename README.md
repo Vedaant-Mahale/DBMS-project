@@ -49,7 +49,6 @@ CREATE TABLE Supplier (
 );
 
 CREATE TABLE Item (
-	batch_id INT PRIMARY KEY,
     item_id INT,
     item_name VARCHAR(100) NOT NULL,
     price_bought DECIMAL(10, 2) NOT NULL,
@@ -64,6 +63,7 @@ CREATE TABLE Buy (
     buy_id INT PRIMARY KEY AUTO_INCREMENT,
     customer_id INT NOT NULL,
     batch_id INT NOT NULL,
+    item_id INT NOT NULL,
     quantity INT DEFAULT 1,
     purchase_date Timestamp DEFAULT current_timestamp,
     UNIQUE (customer_id,batch_id, purchase_date)
@@ -91,9 +91,20 @@ FOR EACH ROW
 BEGIN
     Update Item
     Set quantity = quantity - new.quantity
-    where batch_id = new.batch_id;
+    where item_id = new.item_id;
 END;
 //
 
+DELIMITER //
+
+CREATE TRIGGER batch_unbought
+AFTER delete ON buy
+FOR EACH ROW
+BEGIN
+    Update Item
+    Set quantity = quantity + old.quantity
+    where item_id = old.item_id;
+END;
+//
 
 
