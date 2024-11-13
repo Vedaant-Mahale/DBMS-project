@@ -85,6 +85,8 @@ insert into user(id,username,password,role) values(100,'Vedaant','student','admi
 
 DELIMITER //
 
+DELIMITER //
+
 CREATE TRIGGER batch_bought
 AFTER INSERT ON buy
 FOR EACH ROW
@@ -92,6 +94,9 @@ BEGIN
     Update Item
     Set quantity = quantity - new.quantity
     where item_id = new.item_id;
+    Update Supplies
+    Set quantity = quantity - new.quantity
+    where batch_id = new.batch_id;
 END;
 //
 
@@ -104,6 +109,9 @@ BEGIN
     Update Item
     Set quantity = quantity + old.quantity
     where item_id = old.item_id;
+    Update Supplies
+    Set quantity = quantity + old.quantity
+    where batch_id = old.batch_id;
 END;
 //
 
