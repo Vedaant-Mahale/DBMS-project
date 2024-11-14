@@ -115,4 +115,26 @@ BEGIN
 END;
 //
 
+DELIMITER //
 
+CREATE TRIGGER batch_supplied
+AFTER insert ON Supplies
+FOR EACH ROW
+BEGIN
+    Update Item
+    Set quantity = quantity + new.quantity
+    where item_id = new.item_id;
+END;
+//
+
+DELIMITER //
+
+CREATE TRIGGER batch_unsupplied
+BEFORE delete ON Supplies
+FOR EACH ROW
+BEGIN
+    Update Item
+    Set quantity = quantity - old.quantity
+    where item_id = old.item_id;
+END;
+//
