@@ -85,8 +85,6 @@ insert into user(id,username,password,role) values(100,'Vedaant','student','admi
 
 DELIMITER //
 
-DELIMITER //
-
 CREATE TRIGGER batch_bought
 AFTER INSERT ON buy
 FOR EACH ROW
