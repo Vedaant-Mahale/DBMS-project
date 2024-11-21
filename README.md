@@ -49,33 +49,90 @@ CREATE TABLE Supplier (
 );
 
 CREATE TABLE Item (
-	batch_id INT PRIMARY KEY,
     item_id INT,
     item_name VARCHAR(100) NOT NULL,
     price_bought DECIMAL(10, 2) NOT NULL,
     price_sold DECIMAL(10, 2) NOT NULL,
-    quantity_in_stock INT DEFAULT 0,
-    shelf_life_days INT,
+    quantity INT DEFAULT 0,
     shelf_no VARCHAR(50),
+    shelf_life_days INT,
     discount DECIMAL(5, 2) DEFAULT 0.00
 );
 
 CREATE TABLE Buy (
     buy_id INT PRIMARY KEY AUTO_INCREMENT,
     customer_id INT NOT NULL,
+    batch_id INT NOT NULL,
     item_id INT NOT NULL,
     quantity INT DEFAULT 1,
     purchase_date Timestamp DEFAULT current_timestamp,
-    UNIQUE (customer_id, item_id, purchase_date)
+    UNIQUE (customer_id,batch_id, purchase_date)
 );
 
 CREATE TABLE Supplies (
     Supplier_id INT,
     Item_id INT,
     Batch_id INT,
-    PRIMARY KEY (Supplier_id, Item_id)
+    quantity INT,
+    expired INT,
+    PRIMARY KEY (Batch_id)
 );
 
 # Inserted Values
-insert into user(id,username,password,role) values(100,'vedaant','student','administrator');
+insert into user(id,username,password,role) values(100,'Vedaant','student','administrator');
 
+# Triggers
+
+DELIMITER //
+
+CREATE TRIGGER batch_bought
+AFTER INSERT ON buy
+FOR EACH ROW
+BEGIN
+    Update Item
+    Set quantity = quantity - new.quantity
+    where item_id = new.item_id;
+    Update Supplies
+    Set quantity = quantity - new.quantity
+    where batch_id = new.batch_id;
+END;
+//
+
+DELIMITER //
+
+CREATE TRIGGER batch_unbought
+AFTER delete ON buy
+FOR EACH ROW
+BEGIN
+    Update Item
+    Set quantity = quantity + old.quantity
+    where item_id = old.item_id;
+    Update Supplies
+    Set quantity = quantity + old.quantity
+    where batch_id = old.batch_id;
+END;
+//
+
+DELIMITER //
+
+CREATE TRIGGER batch_supplied
+AFTER insert ON Supplies
+FOR EACH ROW
+BEGIN
+    Update Item
+    Set quantity = quantity + new.quantity
+    where item_id = new.item_id;
+END;
+//
+
+DELIMITER //
+
+CREATE TRIGGER batch_unsupplied
+BEFORE delete ON Supplies
+FOR EACH ROW
+BEGIN
+    Update Item
+    Set quantity = quantity - old.quantity
+    where item_id = old.item_id;
+END;
+//
