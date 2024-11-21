@@ -16,10 +16,21 @@ function Employee() {
   const [iswarehousehovering, setIsWarehouseHovering] = useState(false);
   const navigate = useNavigate();
   const styles = {
-    dashboard: {
-      fontFamily: 'Arial, sans-serif',
-      backgroundColor: '#F5F5F5',
-    },
+    body: {
+      margin: 0,
+      fontFamily: "'Arial', sans-serif",
+      background: 'linear-gradient(to right, #00c6ff, #0072ff)',
+      animation: 'gradientBackground 8s ease infinite', // Gradient background animation
+      backgroundImage: 'url("https://images.unsplash.com/photo-1498050108023-c5249f4df085")', // Example background image (you can replace this URL with any image)
+      backgroundPosition: 'center',
+      backgroundAttachment: 'fixed', // Create a parallax effect
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover', // Ensure the image covers the whole background
+      height: '100%',
+  },
+  bodyfilter: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+  },
     header: {
         width: '100%',
       display: 'flex',
@@ -27,7 +38,7 @@ function Employee() {
       alignItems: 'center',
       marginBottom: '20px',
       height:'70px',
-      backgroundColor: '#AADDFF',
+      backgroundColor: '#0072ff',
       color: 'black'
     },
     logo: {
@@ -38,7 +49,7 @@ function Employee() {
       fontWeight: 'bold',
     },
    Customerbutton: {
-      backgroundColor: iscustomerhovering? '#AADDFF':'white',
+      backgroundColor: iscustomerhovering? '#0072ff':'white',
       color: iscustomerhovering? 'white':'black',
       fontWeight:'bold',
       padding: '10px',
@@ -51,7 +62,7 @@ function Employee() {
       margin:'20px',
     },
     Warehousebutton: {
-      backgroundColor: iswarehousehovering? '#AADDFF':'white',
+      backgroundColor: iswarehousehovering? '#0072ff':'white',
       color: iswarehousehovering? 'white':'black',
       fontWeight:'bold',
       padding: '10px',
@@ -81,7 +92,8 @@ function Employee() {
       padding: '20px',
       fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
       lineHeight: 1.6,
-      backgroundColor: '#f5f5f5',
+      backgroundColor: 'rgba(255, 255, 255, 0.5)', 
+      borderRadius:'5px',
       color: '#333',
     },
     headerbottom: {
@@ -148,7 +160,7 @@ function Employee() {
     }
     const toWarehouse = () =>
     {
-        navigate('/warehouse',{state: { user:user}});
+        navigate('/supplied',{state: { user:user}});
     }
     const handleCustomerMouseHover = () => 
     {
@@ -212,7 +224,6 @@ function Employee() {
     const removeTransactions = async () => {
       try {
           await axios.post('http://localhost:3000/api/sql-connect', { customQuery: removetrans });
-          const response = await axios.post('http://localhost:3000/api/sql-connect', { customQuery: 'SELECT * FROM Employee' });
           setEmployees(response.data);
           alert('Employee Removed');
       } catch (error) {
@@ -224,8 +235,9 @@ function Employee() {
     setRemoveId('');
   };
   return (
-    <>
-    <header style={styles.header}>
+    <div style={styles.body}>
+      <div style = {styles.bodyfilter}>
+        <header style={styles.header}>
             <img src = {logo} style={styles.logo}></img>
             <div className="buttons">
             <button style = {styles.Customerbutton} onClick={toCustomer} onMouseEnter={handleCustomerMouseHover} onMouseLeave={handleCustomerMouseLeave}>Customer</button>
@@ -284,7 +296,8 @@ function Employee() {
       <div style={styles.container}>
       <EmployeeList employees={employees} />
       </div>
-      </>
+      </div>
+      </div>
   );
 }
 
