@@ -354,8 +354,8 @@ function Homepage() {
         </header>
         <div style={styles.stats}>
           <div style={styles.statCard}>
-            <h3 style={styles.statCardTitle}>Total Sales</h3>
-            <p style={styles.amount}>${sales.sales}</p>
+            <h3 style={styles.statCardTitle}>Total Items Sold</h3>
+            <p style={styles.amount}>{sales.sales}</p>
           </div>
           <div style={styles.statCard}>
             <h3 style={styles.statCardTitle}>Active Customers</h3>
